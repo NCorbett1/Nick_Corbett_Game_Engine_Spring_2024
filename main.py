@@ -25,6 +25,7 @@ class Game:
     # sets size of player
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
+        self.coins = pg.sprite.Group()
         self.player1= Player(self, 1, 1)
         for x in range(10, 20):
             Wall(self, x, 5)
@@ -33,8 +34,12 @@ class Game:
             for col, tile in enumerate(tiles):
                 print(col)
                 if tile == '1':
+                    print("a coin at", row, col)
+                    Wall(self, col, row)
+                if tile == '2':
                     print("a wall at", row, col)
                     Wall(self, col, row)
+                
 #why does this go there
     def load_data(self):
         game_folder = path.dirname(__file__)
