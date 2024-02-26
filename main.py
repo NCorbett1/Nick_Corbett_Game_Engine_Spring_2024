@@ -27,18 +27,18 @@ class Game:
         self.walls = pg.sprite.Group()
         self.coins = pg.sprite.Group()
         self.player1= Player(self, 1, 1)
-        for x in range(10, 20):
-            Wall(self, x, 5)
-            for row, tiles in enumerate(self.map_data):
+        # for x in range(10, 20):
+        #     Wall(self, x, 5)
+        for row, tiles in enumerate(self.map_data):
                 print(row)
-            for col, tile in enumerate(tiles):
-                print(col)
-                if tile == '1':
-                    print("a coin at", row, col)
-                    Wall(self, col, row)
-                if tile == '2':
-                    print("a wall at", row, col)
-                    Wall(self, col, row)
+                for col, tile in enumerate(tiles):
+                        print(col)
+                        if tile == '1':
+                            print("a coin at", row, col)
+                            Wall(self, col, row)
+                        if tile == '2':
+                            print("a wall at", row, col)
+                            Wall(self, col, row)
                 
 #why does this go there
     def load_data(self):
