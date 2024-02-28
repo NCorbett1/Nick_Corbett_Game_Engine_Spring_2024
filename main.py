@@ -1,5 +1,5 @@
 # This file was created by: Nick Corbett
-
+#first file commit from VS Code
 #Imports pygame as pg and imports settings code
 import pygame as pg 
 from settings import *
