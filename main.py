@@ -8,6 +8,7 @@ from random import randint
 import sys
 from os import path
 #creates a variable called game
+#this makes something new
 class Game:
 #code template for creating python
     def __init__(self):
