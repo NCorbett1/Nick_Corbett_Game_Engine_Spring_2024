@@ -1,6 +1,9 @@
 # This file was created by: Nick Corbett
 #first file commit from VS Code
 #Imports pygame as pg and imports settings code
+#Goal 1: mob
+#Goal 2: coins
+#Goals 3: game over
 import pygame as pg 
 from settings import *
 from sprites import *
@@ -20,7 +23,13 @@ class Game:
         self.clock = pg.time.Clock()
         self.load_data()
     def load_data(self):
-        pass
+        game_folder = path.dirname(__file__)
+        self.map_data = []
+        with open(path,join(game_folder, 'map.txt'), 'rt') as f:
+            for line in f:
+                print(line)
+                self.map_data.append(line)
+                
    #create way to run whole game    
     def new(self):
     # sets size of player
@@ -28,18 +37,16 @@ class Game:
         self.walls = pg.sprite.Group()
         self.coins = pg.sprite.Group()
         self.player1= Player(self, 1, 1)
+        self.mob
         # for x in range(10, 20):
         #     Wall(self, x, 5)
         for row, tiles in enumerate(self.map_data):
                 print(row)
                 for col, tile in enumerate(tiles):
-                        print(col)
-                        if tile == '1':
-                            print("a coin at", row, col)
-                            Wall(self, col, row)
-                        if tile == '2':
-                            print("a wall at", row, col)
-                            Wall(self, col, row)
+                    print(col)
+                    if tile == '1':
+                        print("a wall at", row, col)
+                        Wall(self, col, row)
                 
 #why does this go there
     def load_data(self):
