@@ -12,6 +12,7 @@ import sys
 from os import path
 #creates a variable called game
 #this makes something new
+
 class Game:
 #code template for creating python
     def __init__(self):
@@ -37,7 +38,8 @@ class Game:
         self.walls = pg.sprite.Group()
         self.coins = pg.sprite.Group()
         self.player1= Player(self, 1, 1)
-        self.mob
+        self.mob= pg.sprite.Group()
+        self.boom= pg.sprite.Group()
         # for x in range(10, 20):
         #     Wall(self, x, 5)
         for row, tiles in enumerate(self.map_data):
