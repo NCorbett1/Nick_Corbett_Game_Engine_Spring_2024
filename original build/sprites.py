@@ -70,6 +70,9 @@ class Player(pg.sprite.Sprite):
                 self.moneybag += 1
             if str(hits[0].__class__.__name__) == "Mob":
                 self.quit()
+            if str(hits[0].__class__.__name__) == "Boost":
+                global PLAYER_SPEED
+                PLAYER_SPEED = 600
 
     def update(self):
         self.get_keys()
@@ -83,6 +86,7 @@ class Player(pg.sprite.Sprite):
         self.collide_with_walls('y')
         self.collide_with_group(self.game.coins, True)
         self.collide_with_group(self.game.mobs, True)
+        self.collide_with_group(self.game.boosts, True)
           
         # coin_hits = pg.sprite.spritecollide(self.game.coins, True)
         # if coin_hits:
@@ -169,3 +173,15 @@ class Mob(pg.sprite.Sprite):
         self.rect.y = self.y
         # self.collide_with_walls('y')
 
+class Boost(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.boosts
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.image.fill(ORANGE)
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
