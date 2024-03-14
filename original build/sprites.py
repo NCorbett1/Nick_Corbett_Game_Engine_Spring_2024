@@ -73,7 +73,10 @@ class Player(pg.sprite.Sprite):
             if str(hits[0].__class__.__name__) == "Boost":
                 global PLAYER_SPEED
                 PLAYER_SPEED = 600
-
+            if str(hits[0].__class__.__name__) == "SUPERSPEED":
+                global PLAYER_SPEED
+                PLAYER_SPEED = 1200
+            
     def update(self):
         self.get_keys()
         self.x += self.vx * self.game.dt
@@ -87,6 +90,7 @@ class Player(pg.sprite.Sprite):
         self.collide_with_group(self.game.coins, True)
         self.collide_with_group(self.game.mobs, True)
         self.collide_with_group(self.game.boosts, True)
+        self.collide_with_group(self.game.superspeeds, True)
           
         # coin_hits = pg.sprite.spritecollide(self.game.coins, True)
         # if coin_hits:
@@ -180,6 +184,18 @@ class Boost(pg.sprite.Sprite):
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
         self.image.fill(ORANGE)
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
+class SUPERSPEED(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.superspeeds
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.image.fill(LIGHTBLUE)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
