@@ -42,7 +42,7 @@ class Game:
         self.coins = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.boosts = pg.sprite.Group()
-        self.superspeed = pg.sprite.Group()
+        self.superspeeds = pg.sprite.Group()
         # self.player1 = Player(self, 1, 1)
         # for x in range(10, 20):
         #     Wall(self, x, 5)
@@ -62,7 +62,7 @@ class Game:
                 if tile == 'L':
                     Boost(self, col, row)
                 if tile == 'K':
-                    Superspeed(self, col, row)
+                    SUPERSPEED(self, col, row)
 
 
     def run(self):

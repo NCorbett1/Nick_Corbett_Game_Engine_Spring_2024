@@ -74,8 +74,9 @@ class Player(pg.sprite.Sprite):
                 global PLAYER_SPEED
                 PLAYER_SPEED = 600
             if str(hits[0].__class__.__name__) == "SUPERSPEED":
-                global PLAYER_SPEED
+                # global PLAYER_SPEED
                 PLAYER_SPEED = 1200
+                
             
     def update(self):
         self.get_keys()
