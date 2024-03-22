@@ -2,7 +2,7 @@
 # This code was inspired by Zelda and informed by Chris Bradfield
 import pygame as pg
 from settings import *
-
+# ass player with color, and where it starts
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites
@@ -16,7 +16,7 @@ class Player(pg.sprite.Sprite):
         self.x = x * TILESIZE
         self.y = y * TILESIZE
         self.moneybag = 0
-    
+    # keys for how to play the game
     def get_keys(self):
         self.vx, self.vy = 0, 0
         keys = pg.key.get_pressed()
@@ -42,7 +42,7 @@ class Player(pg.sprite.Sprite):
     #         if wall.x == self.x + dx and wall.y == self.y + dy:
     #             return True
     #     return False
-            
+       #does not let the player run through walls     
     def collide_with_walls(self, dir):
         if dir == 'x':
             hits = pg.sprite.spritecollide(self, self.game.walls, False)
@@ -62,7 +62,7 @@ class Player(pg.sprite.Sprite):
                     self.y = hits[0].rect.bottom
                 self.vy = 0
                 self.rect.y = self.y
-    
+    # tells game what to do if player runs into one of the blocks including a mob, coin, or boosts
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
@@ -77,7 +77,7 @@ class Player(pg.sprite.Sprite):
                 # global PLAYER_SPEED
                 PLAYER_SPEED = 1200
                 
-            
+        #updates game and allows for game to run    
     def update(self):
         self.get_keys()
         self.x += self.vx * self.game.dt
@@ -102,7 +102,7 @@ class Player(pg.sprite.Sprite):
 
 
 
-
+#adds walls players cannot go through
 class Wall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.walls
@@ -115,7 +115,7 @@ class Wall(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
-
+# places a coin on the screen for player to collect
 class Coin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.coins
@@ -128,7 +128,7 @@ class Coin(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
-
+# places mob in game and if the mob comes into contact with player= game over
 class Mob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.mobs
@@ -177,7 +177,7 @@ class Mob(pg.sprite.Sprite):
         # self.collide_with_walls('x')
         self.rect.y = self.y
         # self.collide_with_walls('y')
-
+#gives player a small boost of speed
 class Boost(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.boosts
@@ -190,6 +190,7 @@ class Boost(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+    #introduce new player speed that makes player even faster
 class SUPERSPEED(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.superspeeds

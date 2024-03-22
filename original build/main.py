@@ -50,6 +50,7 @@ class Game:
             print(row)
             for col, tile in enumerate(tiles):
                 print(col)
+                #Below are all tiles that are placed into map.txt to run the game
                 if tile == '1':
                     print("a wall at", row, col)
                     Wall(self, col, row)
@@ -66,7 +67,7 @@ class Game:
 
 
     def run(self):
-        # 
+        # runs the game and allows the game to quit 
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
@@ -76,10 +77,10 @@ class Game:
     def quit(self):
          pg.quit()
          sys.exit()
-
+#updates game
     def update(self):
         self.all_sprites.update()
-    
+    #size of game and boxes on the screen
     def draw_grid(self):
          for x in range(0, WIDTH, TILESIZE):
               pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
@@ -99,7 +100,7 @@ class Game:
             self.draw_text(self.screen, str(self.player.moneybag), 64, WHITE, 1, 1)
 
             pg.display.flip()
-
+#rules of quitting game
     def events(self):
          for event in pg.event.get():
             if event.type == pg.QUIT:
