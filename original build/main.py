@@ -33,6 +33,24 @@ class Game:
             for line in f:
                 print(line)
                 self.map_data.append(line)
+    
+    def show_start_screen(self):
+        self.screen.fill(BGCOLOR)
+        self.draw_text(self.screen, "Start", 24, WHITE, 10, 2)
+        pg.display.flip()
+        self.wait_for_key()
+
+    def wait_for_key(self):
+        waiting = True
+        while waiting: 
+            self.clock.tick(FPS) 
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    waiting = False
+                    self.quit()
+                if event.type == pg.KEYUP:
+                    waiting = False
+
 
     # Create run method which runs the whole GAME
     def new(self):
@@ -99,6 +117,7 @@ class Game:
             self.all_sprites.draw(self.screen)
             self.draw_text(self.screen, str(self.player.moneybag), 64, WHITE, 1, 1)
 
+
             pg.display.flip()
 #rules of quitting game
     def events(self):
@@ -117,6 +136,7 @@ class Game:
 
 # Instantiate the game... 
 g = Game()
+g.show_start_screen()
 # use game method run to run
 # g.show_start_screen()
 while True:
