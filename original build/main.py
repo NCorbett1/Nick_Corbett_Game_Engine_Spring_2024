@@ -36,7 +36,7 @@ class Game:
     
     def show_start_screen(self):
         self.screen.fill(BGCOLOR)
-        self.draw_text(self.screen, "Start", 24, WHITE, 10, 2)
+        self.draw_text(self.screen, "The Beginning", 24, WHITE, 10, 2)
         pg.display.flip()
         self.wait_for_key()
 
