@@ -8,6 +8,8 @@ from random import randint
 import sys
 from os import path
 
+#beta goals, end screen, start scree, working code
+
 
 # Define game class...
 class Game:
