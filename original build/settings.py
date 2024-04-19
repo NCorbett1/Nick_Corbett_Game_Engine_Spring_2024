@@ -21,6 +21,7 @@ BROWN = (150,94,0)
 PURPLE = (97,0,161)
 LIGHTBLUE = (82,219,255)
 BGCOLOR = (0,0,0)
+WHITE = (255,255,255)
 # Player settings/ player speeds
 PLAYER_SPEED = 300
 PLAYER_BOOST = 600

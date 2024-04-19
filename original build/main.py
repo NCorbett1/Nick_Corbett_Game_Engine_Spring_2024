@@ -8,6 +8,9 @@ from random import randint
 import sys
 from os import path
 
+LEVEL1 = "level1.txt"
+LEVEL2 = "level2.txt"
+
 #beta goals, end screen, start scree, working code
 
 
@@ -23,38 +26,16 @@ class Game:
         # setting game clock 
         self.clock = pg.time.Clock()
         self.load_data()
+
+
     def load_data(self):
-        game_folder = path.dirname(__file__)
+        self.game_folder = path.dirname(__file__)
         self.map_data = []
-        '''
-        The with statement is a context manager in Python. 
-        It is used to ensure that a resource is properly closed or released 
-        after it is used. This can help to prevent errors and leaks.
-        '''
-        with open(path.join(game_folder, 'map.txt'), 'rt') as f:
+        with open(path.join(self.game_folder, LEVEL1), 'rt') as f:
             for line in f:
                 print(line)
                 self.map_data.append(line)
-    
-    def show_start_screen(self):
-        self.screen.fill(BGCOLOR)
-        self.draw_text(self.screen, "The Beginning", 24, WHITE, 10, 2)
-        pg.display.flip()
-        self.wait_for_key()
 
-    def wait_for_key(self):
-        waiting = True
-        while waiting: 
-            self.clock.tick(FPS) 
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    waiting = False
-                    self.quit()
-                if event.type == pg.KEYUP:
-                    waiting = False
-
-
-    # Create run method which runs the whole GAME
     def new(self):
         print("create new game...")
         self.all_sprites = pg.sprite.Group()
@@ -85,6 +66,53 @@ class Game:
                 if tile == 'K':
                     SUPERSPEED(self, col, row)
 
+    def change_level(self, lvl):
+        for s in self.all_sprites:
+            s.kill()
+        self.player.moneybag = 0
+        self.map_data = []
+        with open(path.join(self.game_folder, lvl), 'rt') as f:
+            for line in f:
+                print(line)
+                self.map_data.append(line)
+        for row, tiles in enumerate(self.map_data):
+            print(row)
+            for col, tile in enumerate(tiles):
+                print(col)
+                #Below are all tiles that are placed into map.txt to run the game
+                if tile == '1':
+                    print("a wall at", row, col)
+                    Wall(self, col, row)
+                if tile == 'P':
+                    self.player = Player(self, col, row)
+                if tile == 'C':
+                    Coin(self, col, row)
+                if tile == 'F':
+                    Mob(self, col, row)
+                if tile == 'L':
+                    Boost(self, col, row)
+                if tile == 'K':
+                    SUPERSPEED(self, col, row)
+    
+    def show_start_screen(self):
+        self.screen.fill(BGCOLOR)
+        self.draw_text(self.screen, "The Beginning", 24, WHITE, 10, 2)
+        pg.display.flip()
+        self.wait_for_key()
+
+    def wait_for_key(self):
+        waiting = True
+        while waiting: 
+            self.clock.tick(FPS) 
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    waiting = False
+                    self.quit()
+                if event.type == pg.KEYUP:
+                    waiting = False
+
+
+    # Create run method which runs the whole GAME
 
     def run(self):
         # runs the game and allows the game to quit 
@@ -96,10 +124,12 @@ class Game:
             self.draw()
     def quit(self):
          pg.quit()
-         sys.exit()
+         sys.exit() 
 #updates game
     def update(self):
         self.all_sprites.update()
+        if self.player.moneybag > 8:
+            self.change_level(LEVEL2)
     #size of game and boxes on the screen
     def draw_grid(self):
          for x in range(0, WIDTH, TILESIZE):
