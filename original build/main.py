@@ -12,6 +12,7 @@ LEVEL1 = "level1.txt"
 LEVEL2 = "level2.txt"
 
 #beta goals, end screen, start scree, working code
+#Also add new levels and a charectristic such as something we have never done like an emote after collecting coin 
 
 
 # Define game class...
