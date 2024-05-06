@@ -7,6 +7,7 @@ from sprites import *
 from random import randint
 import sys
 from os import path
+import time
 
 LEVEL1 = "level1.txt"
 LEVEL2 = "level2.txt"
@@ -27,6 +28,7 @@ class Game:
         # setting game clock 
         self.clock = pg.time.Clock()
         self.load_data()
+        self.start_time = None
 
 
     def load_data(self):
@@ -37,7 +39,10 @@ class Game:
                 print(line)
                 self.map_data.append(line)
 
+    def reset(self):
+        self.start_time = None
     def new(self):
+        self.start_time = pg.time.get_ticks()
         print("create new game...")
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
@@ -101,6 +106,11 @@ class Game:
         pg.display.flip()
         self.wait_for_key()
 
+    def show_end_screen(self):
+        # Display the final time when the game ends
+        self.draw_text(self.screen, f"Final Time: {self.elapsed_time // 1000}", 24, WHITE, 10, 60)
+
+
     def wait_for_key(self):
         waiting = True
         while waiting: 
@@ -117,6 +127,7 @@ class Game:
 
     def run(self):
         # runs the game and allows the game to quit 
+        self.show_end_screen()
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
@@ -128,9 +139,13 @@ class Game:
          sys.exit() 
 #updates game
     def update(self):
-        self.all_sprites.update()
-        if self.player.moneybag > 8:
-            self.change_level(LEVEL2)
+         if self.start_time is not None:
+            self.current_time = pg.time.get_ticks()
+            self.elapsed_time = self.current_time - self.start_time
+            self.all_sprites.update()
+            if self.player.moneybag > 8:
+                self.change_level(LEVEL2)
+       
     #size of game and boxes on the screen
     def draw_grid(self):
          for x in range(0, WIDTH, TILESIZE):
@@ -145,10 +160,12 @@ class Game:
         text_rect.topleft = (x*TILESIZE,y*TILESIZE)
         surface.blit(text_surface, text_rect)
     def draw(self):
-            self.screen.fill(BGCOLOR)
-            self.draw_grid()
-            self.all_sprites.draw(self.screen)
-            self.draw_text(self.screen, str(self.player.moneybag), 64, WHITE, 1, 1)
+            if self.start_time is not None:
+                self.draw_text(self.screen, f"Time: {self.elapsed_time // 1000}", 24, WHITE, 10, 30)
+                self.screen.fill(BGCOLOR)
+                self.draw_grid()
+                self.all_sprites.draw(self.screen)
+                self.draw_text(self.screen, str(self.player.moneybag), 64, WHITE, 1, 1)
 
 
             pg.display.flip()
