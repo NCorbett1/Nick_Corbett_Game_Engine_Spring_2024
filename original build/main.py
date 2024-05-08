@@ -35,7 +35,7 @@ class Game:
     def load_data(self):
         self.game_folder = path.dirname(__file__)
         self.map_data = []
-        with open(path.join(self.game_folder, LEVEL1), 'rt') as f:
+        with open(path.join(self.game_folder, 'level1.txt'), 'rt') as f:
             for line in f:
                 print(line)
                 self.map_data.append(line)
@@ -69,6 +69,15 @@ class Game:
                     Boost(self, col, row)
                 if tile == 'K':
                     SUPERSPEED(self, col, row)
+
+
+    def load_data(self):
+        self.game_folder = path.dirname(__file__)
+        self.map_data = []
+        with open(path.join(self.game_folder, LEVEL1), 'rt') as f:
+            for line in f:
+                print(line)
+                self.map_data.append(line)
 
     def change_level(self, lvl):
         for s in self.all_sprites:
@@ -139,6 +148,8 @@ class Game:
 #updates game
     def update(self):
         self.all_sprites.update()
+        if self.player.moneybag > 8:
+            self.change_level(LEVEL2)
     #size of game and boxes on the screen
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
