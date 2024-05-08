@@ -7,7 +7,7 @@ from sprites import *
 from random import randint
 import sys
 from os import path
-import time
+
 
 LEVEL1 = "level1.txt"
 LEVEL2 = "level2.txt"
@@ -28,7 +28,8 @@ class Game:
         # setting game clock 
         self.clock = pg.time.Clock()
         self.load_data()
-        self.start_time = None
+        
+     
 
 
     def load_data(self):
@@ -39,10 +40,7 @@ class Game:
                 print(line)
                 self.map_data.append(line)
 
-    def reset(self):
-        self.start_time = None
     def new(self):
-        self.start_time = pg.time.get_ticks()
         print("create new game...")
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
@@ -100,15 +98,11 @@ class Game:
                 if tile == 'K':
                     SUPERSPEED(self, col, row)
     
-    def show_start_screen(self):
-        self.screen.fill(BGCOLOR)
-        self.draw_text(self.screen, "The Beginning", 24, WHITE, 10, 2)
-        pg.display.flip()
-        self.wait_for_key()
-
-    def show_end_screen(self):
-        # Display the final time when the game ends
-        self.draw_text(self.screen, f"Final Time: {self.elapsed_time // 1000}", 24, WHITE, 10, 60)
+    # def show_start_screen(self):
+    #     self.screen.fill(BGCOLOR)
+    #     self.draw_text(self.screen, "The Beginning", 24, WHITE, 10, 2)
+    #     pg.display.flip()
+    #     self.wait_for_key()
 
 
     def wait_for_key(self):
@@ -121,37 +115,36 @@ class Game:
                     self.quit()
                 if event.type == pg.KEYUP:
                     waiting = False
-
-
     # Create run method which runs the whole GAME
 
     def run(self):
         # runs the game and allows the game to quit 
-        self.show_end_screen()
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
             self.update()
             self.draw()
+            self.check_wall_collision()
+
+    def check_wall_collision(self):
+        # Check collision between player and walls
+        hits = pg.sprite.spritecollide(self.player, self.walls, False)
+        for wall in hits:
+            wall.color_timer = 180  # Change wall color for 3 seconds (60 FPS * 3 seconds)
+
     def quit(self):
          pg.quit()
          sys.exit() 
 #updates game
     def update(self):
-         if self.start_time is not None:
-            self.current_time = pg.time.get_ticks()
-            self.elapsed_time = self.current_time - self.start_time
-            self.all_sprites.update()
-            if self.player.moneybag > 8:
-                self.change_level(LEVEL2)
-       
+        self.all_sprites.update()
     #size of game and boxes on the screen
     def draw_grid(self):
-         for x in range(0, WIDTH, TILESIZE):
-              pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
-         for y in range(0, HEIGHT, TILESIZE):
-              pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
+        for x in range(0, WIDTH, TILESIZE):
+            pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
+        for y in range(0, HEIGHT, TILESIZE):
+            pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
     def draw_text(self, surface, text, size, color, x, y):
         font_name = pg.font.match_font('arial')
         font = pg.font.Font(font_name, size)
@@ -160,15 +153,10 @@ class Game:
         text_rect.topleft = (x*TILESIZE,y*TILESIZE)
         surface.blit(text_surface, text_rect)
     def draw(self):
-            if self.start_time is not None:
-                self.draw_text(self.screen, f"Time: {self.elapsed_time // 1000}", 24, WHITE, 10, 30)
-                self.screen.fill(BGCOLOR)
-                self.draw_grid()
-                self.all_sprites.draw(self.screen)
-                self.draw_text(self.screen, str(self.player.moneybag), 64, WHITE, 1, 1)
-
-
-            pg.display.flip()
+        self.screen.fill(BGCOLOR)
+        self.draw_grid()
+        self.all_sprites.draw(self.screen)
+        pg.display.flip()
 #rules of quitting game
     def events(self):
          for event in pg.event.get():
@@ -184,6 +172,20 @@ class Game:
             #     if event.key == pg.K_DOWN:
             #         self.player.move(dy=1)
 
+    def draw_text(self, surface, text, size, color, x, y):
+        font_name = pg.font.match_font('comicsans')
+        font = pg.font.Font(font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.topleft = (x*TILESIZE,y*TILESIZE)
+        surface.blit(text_surface, text_rect)
+
+    def show_start_screen(self):
+        self.screen.fill(BGCOLOR)
+        self.draw_text(self.screen, "The Beginning", 24, WHITE, 10, 2)
+        pg.display.flip()
+        self.wait_for_key()
+
 # Instantiate the game... 
 g = Game()
 g.show_start_screen()
@@ -193,3 +195,5 @@ while True:
     g.new()
     g.run()
     # g.show_go_screen()
+
+

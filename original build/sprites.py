@@ -138,6 +138,17 @@ class Wall(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+        self.color_timer = 0
+        self.original_color = BLUE
+
+    def update(self):
+        if self.color_timer > 0:
+            self.image.fill(PURPLE)
+            self.color_timer -= 1
+        else:
+            self.image.fill(self.original_color)
+
+
 # places a coin on the screen for player to collect
 class Coin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -184,22 +195,22 @@ class Mob(pg.sprite.Sprite):
     def update(self):
         # self.image.blit(self.game.screen, self.pic)
         # pass
-        # # self.rect.x += 1
-        # self.x += self.vx * self.game.dt
-        # self.y += self.vy * self.game.dt
+        # self.rect.x += 1
+        self.x += self.vx * self.game.dt
+        self.y += self.vy * self.game.dt
         
-        # if self.rect.x < self.game.player.rect.x:
-        #     self.vx = 100
-        # if self.rect.x > self.game.player.rect.x:
-        #     self.vx = -100    
-        # if self.rect.y < self.game.player.rect.y:
-        #     self.vy = 100
-        # if self.rect.y > self.game.player.rect.y:
-        #     self.vy = -100
+        if self.rect.x < self.game.player.rect.x:
+            self.vx = 100
+        if self.rect.x > self.game.player.rect.x:
+            self.vx = -100    
+        if self.rect.y < self.game.player.rect.y:
+            self.vy = 100
+        if self.rect.y > self.game.player.rect.y:
+            self.vy = -100
         self.rect.x = self.x
-        # self.collide_with_walls('x')
+        self.collide_with_walls('x')
         self.rect.y = self.y
-        # self.collide_with_walls('y')
+        self.collide_with_walls('y')
 #gives player a small boost of speed
 class Boost(pg.sprite.Sprite):
     def __init__(self, game, x, y):
