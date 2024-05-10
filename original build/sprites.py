@@ -76,6 +76,12 @@ class Player(pg.sprite.Sprite):
                     self.x = hits[0].rect.right
                 self.vx = 0
                 self.rect.x = self.x
+            for wall in hits:
+                wall.change_color()
+                wall.color_timer = pg.time.get_ticks()
+                self.vx = 0
+                self.x = wall.rect.x if self.vx > 0 else wall.rect.right
+                self.rect.x = self.x
         if dir == 'y':
             hits = pg.sprite.spritecollide(self, self.game.walls, False)
             if hits:
@@ -85,6 +91,12 @@ class Player(pg.sprite.Sprite):
                     self.y = hits[0].rect.bottom
                 self.vy = 0
                 self.rect.y = self.y
+                for wall in hits:
+                    wall.change_color()
+                    wall.color_timer = pg.time.get_ticks()
+                    self.vy = 0
+                    self.y = wall.rect.y if self.vy > 0 else wall.rect.bottom
+                    self.rect.y = self.y
     # tells game what to do if player runs into one of the blocks including a mob, coin, or boosts
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
@@ -150,14 +162,19 @@ class Wall(pg.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
         self.color_timer = 0
+        self.colors = [PURPLE]
         self.original_color = WHITE
+        #Added wall color change
 
-    def update(self):
-        if self.color_timer > 0:
-            self.image.fill(PURPLE)
-            self.color_timer -= 1
-        else:
+    def change_color(self):
+        self.image.fill(choice(self.colors))
+
+    def update (self):
+        if pg.time.get_ticks() - self.color_timer > 2000:
             self.image.fill(self.original_color)
+            self.color_timer = 0
+
+    
 
 
 # places a coin on the screen for player to collect
