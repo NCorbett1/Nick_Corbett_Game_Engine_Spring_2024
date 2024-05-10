@@ -1,5 +1,5 @@
 # This file was created by: Nick Corbett
-
+#The recent code is from Chat GPT
 # import libraries and modules
 import pygame as pg
 from settings import *

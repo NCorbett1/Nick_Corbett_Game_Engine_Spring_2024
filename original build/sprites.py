@@ -1,5 +1,6 @@
 # This file was created by: Nick Corbett
 # This code was inspired by Zelda and informed by Chris Bradfield
+#the recent code is from Chat GPT
 import pygame as pg
 from settings import *
 from pygame.sprite import Sprite
