@@ -5,6 +5,7 @@ import pygame as pg
 from settings import *
 from pygame.sprite import Sprite
 from os import path
+from random import choice
 
 dir = path.dirname(__file__)
 img_dir = path.join(dir, 'images')
@@ -30,6 +31,11 @@ class Player(pg.sprite.Sprite):
         self.walking = False
         self.current_frame = 0
         self.last_update = 0
+        self.color_timer = 0
+        self.colors = [RED, GREEN, BLUE, YELLOW, PURPLE, BGCOLOR, WHITE, LIGHTGREY, LIGHTBLUE, ORANGE]
+
+    def change_color(self):
+        self.image.fill(choice(self.colors))
         
     # keys for how to play the game
     def get_keys(self):
@@ -109,6 +115,10 @@ class Player(pg.sprite.Sprite):
         self.collide_with_group(self.game.mobs, True)
         self.collide_with_group(self.game.boosts, True)
         self.collide_with_group(self.game.superspeeds, True)
+
+        if pg.time.get_ticks() - self.color_timer > 300:
+            self.change_color()
+            self.color_timer = pg.time.get_ticks()
           
         # coin_hits = pg.sprite.spritecollide(self.game.coins, True)
         # if coin_hits:
